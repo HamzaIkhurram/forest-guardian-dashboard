@@ -10,7 +10,7 @@ import {
   ArrowUp,
   Bell,
   GaugeCircle,
-  MonitorWave,
+  Monitor,
   Settings,
   TrendingUp
 } from "lucide-react";
@@ -36,7 +36,7 @@ export function SidebarNav({ className }: SidebarNavProps) {
     },
     {
       title: "Live Monitoring",
-      icon: <MonitorWave className="h-5 w-5" />,
+      icon: <Monitor className="h-5 w-5" />,
       path: "/live-monitoring",
     },
     {

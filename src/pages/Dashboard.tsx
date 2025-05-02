@@ -6,7 +6,7 @@ import { StatusCard } from "@/components/dashboard/StatusCard";
 import { UptimeTimer } from "@/components/dashboard/UptimeTimer";
 import { 
   Activity, 
-  Fire, 
+  Flame, 
   GaugeCircle, 
   Timer 
 } from "lucide-react";
@@ -38,7 +38,7 @@ export default function Dashboard() {
         <StatusCard
           title="Fire Alerts"
           value="2 active"
-          icon={<Fire className="h-5 w-5 text-destructive" />}
+          icon={<Flame className="h-5 w-5 text-destructive" />}
           isAlert
         />
       </div>

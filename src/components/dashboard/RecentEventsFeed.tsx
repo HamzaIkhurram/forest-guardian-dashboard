@@ -6,7 +6,7 @@ import {
   CheckCircle,
   CircleAlert,
   Clock, 
-  Fire, 
+  Flame, 
   RefreshCcw, 
   TreePine, 
   Volume2 
@@ -40,7 +40,7 @@ export function RecentEventsFeed() {
       case 'chainsaw':
         return <AlertOctagon size={18} className="text-destructive" />;
       case 'fire':
-        return <Fire size={18} className="text-orange-500" />;
+        return <Flame size={18} className="text-orange-500" />;
       case 'bird':
         return <Volume2 size={18} className="text-green-500" />;
       case 'animal':

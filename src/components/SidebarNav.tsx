@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { LoraxLogo } from "./LoraxLogo";
 import { Button } from "@/components/ui/button";
@@ -14,14 +14,33 @@ import {
   Settings,
   TrendingUp
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 interface SidebarNavProps {
   className?: string;
 }
 
 export function SidebarNav({ className }: SidebarNavProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
+  const location = useLocation();
+
+  // Auto-collapse sidebar on small screens
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setExpanded(false);
+      } else {
+        setExpanded(true);
+      }
+    };
+    
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const navItems = [
     {
@@ -43,6 +62,7 @@ export function SidebarNav({ className }: SidebarNavProps) {
       title: "Detections & Alerts",
       icon: <AlertOctagon className="h-5 w-5" />,
       path: "/detections",
+      badge: 2,
     },
     {
       title: "Historical Trends",
@@ -59,7 +79,7 @@ export function SidebarNav({ className }: SidebarNavProps) {
   return (
     <div
       className={cn(
-        "relative h-screen bg-sidebar transition-all duration-300 border-r border-border",
+        "relative h-screen bg-sidebar transition-all duration-300 border-r border-border shadow-md z-50",
         expanded ? "w-[240px]" : "w-[64px]",
         className
       )}
@@ -71,7 +91,7 @@ export function SidebarNav({ className }: SidebarNavProps) {
             variant="ghost"
             size="icon"
             className={cn(
-              "rounded-full ml-auto",
+              "rounded-full hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
               expanded ? "" : "mx-auto"
             )}
             onClick={() => setExpanded(!expanded)}
@@ -93,23 +113,45 @@ export function SidebarNav({ className }: SidebarNavProps) {
                 to={item.path}
                 className={({ isActive }) =>
                   cn(
-                    "flex items-center py-2 px-3 rounded-2xl transition-colors",
+                    "flex items-center py-2 px-3 rounded-2xl transition-all duration-200",
                     "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                    isActive
-                      ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                    location.pathname === item.path
+                      ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium shadow-sm"
                       : "text-sidebar-foreground"
                   )
                 }
               >
-                <span className="flex items-center justify-center">
+                <span className="flex items-center justify-center relative">
                   {item.icon}
+                  {item.badge && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
                 </span>
-                {expanded && <span className="ml-3">{item.title}</span>}
+                {expanded && (
+                  <span className={cn(
+                    "ml-3 transition-opacity duration-200",
+                    expanded ? "opacity-100" : "opacity-0"
+                  )}>
+                    {item.title}
+                  </span>
+                )}
               </NavLink>
             </li>
           ))}
         </ul>
       </nav>
+
+      {/* Environment badge */}
+      {expanded && (
+        <div className="absolute bottom-4 left-0 right-0 px-4">
+          <div className="py-2 px-3 bg-sidebar-accent/50 rounded-xl text-center">
+            <div className="text-xs font-medium text-sidebar-foreground/70">Lorax Forest Guard</div>
+            <div className="text-[10px] text-sidebar-foreground/60">v1.5.2 - Production</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

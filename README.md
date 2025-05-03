@@ -1,73 +1,40 @@
-# Welcome to your Lovable project
+# Lorax - Acoustic Anti-Logging System
+Lorax is an acoustic monitoring and machine learning system designed to detect potential illegal logging activities in real time. It uses a sound sensor for continuous SPL (Sound Pressure Level) monitoring, a microphone for high-fidelity recordings when suspicious noise levels are detected, and a trained convolutional neural network to classify the audio events. The project also provides a Flask web interface for live visualization of dB readings, spectrogram images, and predicted audio class labels.
 
-## Project info
+## Features
+**Real-Time SPL Monitoring**: Continuously tracks dB levels using a Phidget sound sensor (or simulated data).
 
-**URL**: https://lovable.dev/projects/e411d74f-e5b6-4a45-bcd2-edbf757e0cba
+**Threshold-Based Audio Capture**: Records a short audio clip from a microphone whenever the SPL exceeds a preset dB threshold.
 
-## How can I edit this code?
+**Machine Learning Classification**: Converts audio to spectrograms and uses a CNN (trained on forest sound datasets) to detect chainsaw or other suspicious activity.
 
-There are several ways of editing your application.
+**Web Interface**: A Flask-powered dashboard that provides:
+-A live chart of SPL readings
+-Predicted activity labels
+-Visual spectrogram images for quick reference
 
-**Use Lovable**
+## Usage
+Clone the Repository and pip install all modules required 
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e411d74f-e5b6-4a45-bcd2-edbf757e0cba) and start prompting.
+Run the Flask Web App
 
-Changes made via Lovable will be committed automatically to this repo.
+Navigate to src/web/:
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+cd src/web
+python app.py
 ```
+Open your browser at http://localhost:5000 to view the dashboard.
+Observe the Dashboard
 
-**Edit a file directly in GitHub**
+Live SPL readings update in real time (either from the actual Phidget sensor or a simulated data source).
+Once the SPL crosses the threshold (default ~57 dB), the system captures and classifies a 5-second audio clip.
+The predicted label and corresponding spectrogram image appear in the interface.
+Retrain or Update the Model
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+In src/scripts/, run ```train_model.py``` (adjusting dataset paths as needed).
+Replace the old .h5 file in src/web/ with the newly trained version.
 
-**Use GitHub Codespaces**
+## Attributions
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/e411d74f-e5b6-4a45-bcd2-edbf757e0cba) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- ESC-50: Dataset for Environmental Sound Classification used for training audio captioning model: https://github.com/karolpiczak/ESC-50

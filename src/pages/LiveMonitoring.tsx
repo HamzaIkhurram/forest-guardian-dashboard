@@ -5,6 +5,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { SoundHistogram } from "@/components/sound/SoundHistogram";
+import { FrequencyAnalysis } from "@/components/sound/FrequencyAnalysis";
+import { SoundPredictor } from "@/components/sound/SoundPredictor";
 
 // Generate dummy data
 const generateFrequencyData = () => {
@@ -182,7 +185,7 @@ export default function LiveMonitoring() {
         </CardContent>
       </Card>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <Card className="shadow-lg border-border/50 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle>Sensor Levels</CardTitle>
@@ -234,67 +237,12 @@ export default function LiveMonitoring() {
           </CardContent>
         </Card>
         
-        <Card className="shadow-lg border-border/50 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle>Frequency Analysis</CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">Spectral distribution of current audio</p>
-          </CardHeader>
-          <CardContent className="h-[320px] flex items-end justify-between">
-            {/* Create a spectrogram-like visualization */}
-            {Array.from({ length: 32 }).map((_, i) => {
-              const height1 = Math.floor(Math.random() * 100);
-              const height2 = Math.floor(Math.random() * 80);
-              const height3 = Math.floor(Math.random() * 60);
-              
-              // Simulate a chainsaw frequency pattern around certain frequency bands
-              const isChainsawRange = i >= 8 && i <= 12;
-              const chainsawBoost = isChainsawRange ? 40 : 0;
-              
-              return (
-                <div key={i} className="flex flex-col items-center gap-0.5 w-full">
-                  <div className="text-[8px] text-muted-foreground mb-1">
-                    {i * 125} Hz
-                  </div>
-                  <div className="w-full flex flex-col gap-[1px] items-center">
-                    <div 
-                      className={cn(
-                        "w-3 rounded-sm",
-                        isChainsawRange ? "bg-red-500" : "bg-primary"
-                      )}
-                      style={{ 
-                        height: `${height1 + (isChainsawRange ? chainsawBoost : 0)}%`,
-                        maxHeight: "200px",
-                        opacity: isPlaying ? 0.8 : 0.4
-                      }}
-                    ></div>
-                    <div 
-                      className={cn(
-                        "w-2 rounded-sm",
-                        isChainsawRange ? "bg-red-400" : "bg-primary/80"
-                      )}
-                      style={{ 
-                        height: `${height2 + (isChainsawRange ? chainsawBoost : 0)}%`,
-                        maxHeight: "160px",
-                        opacity: isPlaying ? 0.6 : 0.3
-                      }}
-                    ></div>
-                    <div 
-                      className={cn(
-                        "w-1 rounded-sm",
-                        isChainsawRange ? "bg-red-300" : "bg-primary/60"
-                      )}
-                      style={{ 
-                        height: `${height3 + (isChainsawRange ? chainsawBoost : 0)}%`,
-                        maxHeight: "120px",
-                        opacity: isPlaying ? 0.4 : 0.2
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              );
-            })}
-          </CardContent>
-        </Card>
+        <SoundPredictor />
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <SoundHistogram isActive={isPlaying} />
+        <FrequencyAnalysis isActive={isPlaying} />
       </div>
       
       {/* Information panel */}

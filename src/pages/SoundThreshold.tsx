@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
+import { SoundHistogram } from "@/components/sound/SoundHistogram";
 
 export default function SoundThreshold() {
   const [threshold, setThreshold] = useState(60);
@@ -32,16 +33,7 @@ export default function SoundThreshold() {
         </CardContent>
       </Card>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Sound Histogram</CardTitle>
-        </CardHeader>
-        <CardContent className="h-80 flex items-center justify-center">
-          <div className="text-muted-foreground">
-            Sound histogram visualization would be displayed here
-          </div>
-        </CardContent>
-      </Card>
+      <SoundHistogram />
     </div>
   );
 }
